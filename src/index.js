@@ -1,4 +1,5 @@
 const express = require('express');
+const { readData } = require('./talker');
 
 const app = express();
 app.use(express.json());
@@ -13,4 +14,17 @@ app.get('/', (_request, response) => {
 
 app.listen(PORT, () => {
   console.log('Online');
+});
+
+app.get('/talker', async (req, res) => {
+  try {
+    const talkers = await readData();
+    if (talkers) {
+      res.status(200).json(talkers);
+    }
+    return res.status(200).json([]);
+  } catch (error) {
+    console.error('Não foi possivel encontrar');
+    res.status(400);
+  }
 });
