@@ -14,10 +14,10 @@ const readData = async () => {
 };
 
 const getById = async (id) => {
-    const talkers = await readData();
-    const filteredTalker = talkers.find((talker) => talker.id === Number(id));
-    return filteredTalker || null;
-  };
+  const talkers = await readData();
+  const filteredTalker = talkers.find((talker) => talker.id === Number(id));
+  return filteredTalker || null;
+};
 
 module.exports = {
   readData,
