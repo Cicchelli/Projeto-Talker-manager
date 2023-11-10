@@ -1,5 +1,5 @@
 const express = require('express');
-const { readData, getById, postNewTalker, putTalker } = require('./talker');
+const { readData, getById, postNewTalker, putTalker, deleteTalker } = require('./talker');
 const token = require('./Utils/token');
 const verifyEmail = require('./Middlewares/VerifyEmail');
 const verifyPass = require('./Middlewares/VerifyPass');
@@ -67,3 +67,10 @@ app.put('/talker/:id', auten, verifyName, validateAge,
     const newTalker = await putTalker(id, update);
     res.status(200).json(newTalker);
   });
+
+app.delete('/talker/:id', auten, async (req, res) => {
+  const { id } = req.params;
+  const newData = await deleteTalker(id);
+
+  res.sendStatus(204);
+});
