@@ -26,6 +26,18 @@ app.listen(PORT, () => {
   console.log('Online');
 });
 
+app.get('/talker/search', auten, async (req, res) => {
+  try {
+    const { q } = req.query;
+    const data = await readData();
+    const filteredTalkers = data.filter((talker) => talker.name.includes(q));
+
+    res.status(200).json(filteredTalkers);
+  } catch (error) {
+    console.error('Error searching talkers:', error);
+    res.status(500).json({ message: 'Erro interno do servidor' });
+  }
+});
 app.get('/talker', async (req, res) => {
   try {
     const talkers = await readData();
