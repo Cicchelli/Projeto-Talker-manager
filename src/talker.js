@@ -27,7 +27,7 @@ const postNewTalker = async (update) => {
   const newTalker = { id: talkers.length + 1, ...update };
   const allTalkers = [...talkers, newTalker];
   if (update) {
-    fs.writeFile(completePath, JSON.stringify(allTalkers));
+    fs.writeFile(filePath, JSON.stringify(allTalkers, null, 2));
     return newTalker;
   }
   return null;
@@ -39,9 +39,16 @@ const putTalker = async (id, update) => {
   
   const newTalkers = talkers.map((talker) => (talker.id === idNum ? talkerChange : talker));
 
-  await fs.writeFile(completePath, JSON.stringify(newTalkers));
+  await fs.writeFile(filePath, JSON.stringify(newTalkers, null, 2));
 
   return talkerChange;
+};
+
+const deleteTalker = async (id) => {
+  const talkers = await readData();
+  const newTalkers = talkers.filter((talker) => talker.id !== Number(id));
+  fs.writeFile(completePath, JSON.stringify(newTalkers));
+  return newTalkers;
 };
 
 module.exports = {
@@ -49,4 +56,5 @@ module.exports = {
   getById,
   postNewTalker,
   putTalker,
+  deleteTalker,
 };
