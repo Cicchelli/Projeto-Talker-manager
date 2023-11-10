@@ -1,6 +1,8 @@
 const express = require('express');
 const { readData, getById } = require('./talker');
 const token = require('./Utils/token');
+const verifyEmail = require('./Middlewares/VerifyEmail');
+const verifyPass = require('./Middlewares/VerifyPass');
 
 const app = express();
 app.use(express.json());
@@ -39,7 +41,7 @@ app.get('/talker/:id', async (req, res) => {
   return res.status(404).json({ message: 'Pessoa palestrante não encontrada' });
 });
 
-app.post('/login', (req, res) => {
+app.post('/login', verifyEmail, verifyPass, (req, res) => {
   const tokenCreate = token();
   res.status(200).json({ token: tokenCreate });
 });
