@@ -1,6 +1,9 @@
 const fs = require('fs').promises;
 const { join } = require('path');
 
+const paths = '/talker.json';
+const completePath = join(__dirname, paths);
+
 const filePath = join(__dirname, 'talker.json');
 
 const readData = async () => {
@@ -19,7 +22,19 @@ const getById = async (id) => {
   return filteredTalker || null;
 };
 
+const postNewTalker = async (update) => {
+  const talkers = await readData();
+  const newTalker = { id: talkers.length + 1, ...update };
+  const allTalkers = [...talkers, newTalker];
+  if (update) {
+    fs.writeFile(completePath, JSON.stringify(allTalkers));
+    return newTalker;
+  }
+  return null;
+};
+
 module.exports = {
   readData,
   getById,
+  postNewTalker,
 };
