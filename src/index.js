@@ -70,7 +70,7 @@ app.put('/talker/:id', auten, verifyName, validateAge,
   
 app.delete('/talker/:id', auten, async (req, res) => {
   const { id } = req.params;
-  const newData = await deleteTalker(id);
+  await deleteTalker(id);
 
   res.sendStatus(204);
 });
