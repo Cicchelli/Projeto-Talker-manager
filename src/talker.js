@@ -32,9 +32,21 @@ const postNewTalker = async (update) => {
   }
   return null;
 };
+const putTalker = async (id, update) => {
+  const talkers = await readData();
+  const idNum = Number(id);
+  const talkerChange = { id: idNum, ...update };
+  
+  const newTalkers = talkers.map((talker) => (talker.id === idNum ? talkerChange : talker));
+
+  await fs.writeFile(completePath, JSON.stringify(newTalkers));
+
+  return talkerChange;
+};
 
 module.exports = {
   readData,
   getById,
   postNewTalker,
+  putTalker,
 };

@@ -1,5 +1,5 @@
 const express = require('express');
-const { readData, getById, postNewTalker } = require('./talker');
+const { readData, getById, postNewTalker, putTalker } = require('./talker');
 const token = require('./Utils/token');
 const verifyEmail = require('./Middlewares/VerifyEmail');
 const verifyPass = require('./Middlewares/VerifyPass');
@@ -9,6 +9,7 @@ const { validateAge,
   validateTalk, 
   validateWatched,
   validateRate } = require('./Middlewares/VirifyAge');
+const findId = require('./Middlewares/FindId');
 
 const app = express();
 app.use(express.json());
@@ -57,4 +58,12 @@ app.post('/talker', auten, verifyName, validateAge,
   async (req, res) => {
     const newTalker = await postNewTalker(req.body);
     res.status(201).json(newTalker);
+  });
+
+app.put('/talker/:id', auten, verifyName, validateAge,
+  validateTalk, validateWatched, validateRate, findId, async (req, res) => {
+    const { id } = req.params;
+    const update = req.body;
+    const newTalker = await putTalker(id, update);
+    res.status(200).json(newTalker);
   });
